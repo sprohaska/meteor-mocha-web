@@ -25,7 +25,12 @@ Package.on_use(function (api, where) {
   api.add_files(["client.html", "mocha.js", "reporter.js", "chai.js", "client.js"], "client");
   api.add_files(["common.js"], ["client", "server"]);
 
-  api.add_files(["sample-tests/client.js","sample-tests/server.js"], "server", {isAsset: true});
+  // Use addAsset() if available for compatibility with Meteor 1.2.
+  if (api.addAssets) {
+    api.addAssets(["sample-tests/client.js","sample-tests/server.js"], "server");
+  } else {
+    api.add_files(["sample-tests/client.js","sample-tests/server.js"], "server", {isAsset: true});
+  }
 
   api.export("MochaWeb", ["client", "server"]);
   api.export("MeteorCollectionTestReporter", ["client", "server"]);
